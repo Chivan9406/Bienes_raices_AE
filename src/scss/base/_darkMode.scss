@@ -9,6 +9,11 @@
         color: $gris;
     }
 
+    a.boton-verde,
+    a.boton-amarillo {
+        color: $blanco;
+    }
+
     .anuncio,
     .resumen-propiedad {
         background-color: $grisOscuro;
@@ -41,5 +46,9 @@
             border: 1px solid $grisOscuro;
             color: $blanco;
         }
+    }
+
+    tbody {
+        color: $blanco;
     }
 }
