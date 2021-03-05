@@ -1,4 +1,11 @@
 <?php
+//Sesión
+require '../includes/funciones.php';
+$auth = estaAutenticado();
+
+if (!$auth) {
+    header('Location: /');
+}
 
 //Importar la conexión a la BD
 require '../includes/config/database.php';
@@ -17,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
     $id = filter_var($id, FILTER_VALIDATE_INT);
 
-    if($id){
+    if ($id) {
         //Eliminar archivo
         $consultaArchivo = "SELECT imagen FROM propiedades WHERE id = $id";
 
@@ -32,13 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $resultadoEliminar = mysqli_query($db, $consultaEliminar);
 
-        if($resultadoEliminar){
+        if ($resultadoEliminar) {
             header('Location: /admin?resultado=3');
         }
     }
 }
-
-require '../includes/funciones.php';
 
 incluirTemplate('header');
 ?>
@@ -50,7 +55,7 @@ incluirTemplate('header');
     <?php elseif (intval($resultado) === 2) : ?>
         <p class="alerta exito">Propiedad Actualizada Correctamente</p>
     <?php elseif (intval($resultado) === 3) : ?>
-         <p class="alerta exito">Propiedad Eliminada Correctamente</p>
+        <p class="alerta exito">Propiedad Eliminada Correctamente</p>
     <?php endif; ?>
 
     <a href="/admin/propiedades/crear.php" class="boton-verde">Nueva Propiedad</a>
