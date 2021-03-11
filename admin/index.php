@@ -1,21 +1,13 @@
 <?php
 //Sesión
-require '../includes/funciones.php';
-$auth = estaAutenticado();
+require '../includes/app.php';
 
-if (!$auth) {
-    header('Location: /');
-}
+estaAutenticado();
 
-//Importar la conexión a la BD
-require '../includes/config/database.php';
-$db = conectarDB();
+use App\Propiedad;
 
-//Escribir el Query
-$query = "SELECT * FROM propiedades";
-
-//Consultar la BD
-$resultadoConsulta = mysqli_query($db, $query);
+// Implementar método para obtener las propiedades
+$propiedades = Propiedad::all();
 
 //Muestra mensaje condicional (alerta)
 $resultado = $_GET['resultado'] ?? null;
@@ -25,23 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = filter_var($id, FILTER_VALIDATE_INT);
 
     if ($id) {
-        //Eliminar archivo
-        $consultaArchivo = "SELECT imagen FROM propiedades WHERE id = $id";
-
-        $resultadoArchivo = mysqli_query($db, $consultaArchivo);
-
-        $propiedad = mysqli_fetch_assoc($resultadoArchivo);
-
-        unlink('../imagenes/' . $propiedad['imagen']);
-
-        //Eliminar propiedad
-        $consultaEliminar = "DELETE FROM propiedades WHERE id = $id";
-
-        $resultadoEliminar = mysqli_query($db, $consultaEliminar);
-
-        if ($resultadoEliminar) {
-            header('Location: /admin?resultado=3');
-        }
+        $propiedad = Propiedad::find($id);
+        
+        $propiedad->eliminar();
     }
 }
 
@@ -73,21 +51,21 @@ incluirTemplate('header');
 
         <tbody>
             <!--Mostrar los resultados-->
-            <?php while ($propiedad = mysqli_fetch_assoc($resultadoConsulta)) : ?>
+            <?php foreach($propiedades as $propiedad): ?>
                 <tr>
-                    <td><?php echo $propiedad['id']; ?></td>
-                    <td><?php echo $propiedad['titulo']; ?></td>
-                    <td><img src="/imagenes/<?php echo $propiedad['imagen']; ?>" class="imagen-tabla"></td>
-                    <td>$ <?php echo $propiedad['precio']; ?></td>
+                    <td><?php echo $propiedad->id; ?></td>
+                    <td><?php echo $propiedad->titulo; ?></td>
+                    <td><img src="/imagenes/<?php echo $propiedad->imagen; ?>" class="imagen-tabla"></td>
+                    <td>$ <?php echo $propiedad->precio; ?></td>
                     <td>
                         <form method="POST">
-                            <input type="hidden" name="id" value="<?php echo $propiedad['id']; ?>">
+                            <input type="hidden" name="id" value="<?php echo $propiedad->id; ?>">
                             <input type="submit" class="boton-rojo-block w-100" value="Eliminar">
                         </form>
-                        <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad['id']; ?>" class="boton-amarillo-block">Actualizar</a>
+                        <a href="/admin/propiedades/actualizar.php?id=<?php echo $propiedad->id; ?>" class="boton-amarillo-block">Actualizar</a>
                     </td>
                 </tr>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </main>

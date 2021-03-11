@@ -1,12 +1,11 @@
 <?php
 
-require 'includes/funciones.php';
+require 'includes/app.php';
 
 incluirTemplate('header');
-?>
 
-<?php
-include 'includes/templates/anuncio.php';
-?>
+incluirTemplate('anuncio'); 
 
-<?php incluirTemplate('footer'); ?>
+incluirTemplate('footer'); 
+
+?>

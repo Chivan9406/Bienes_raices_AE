@@ -1,6 +1,6 @@
 <?php 
 
-require 'includes/funciones.php';
+require 'includes/app.php';
 
 //Para mostrar el hero con clase .inicio
 incluirTemplate('header', $inicio = true);

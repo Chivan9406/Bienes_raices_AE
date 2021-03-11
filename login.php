@@ -1,6 +1,6 @@
 <?php
 //Conexión a la db
-require 'includes/config/database.php';
+require 'includes/app.php';
 $db = conectarDB();
 
 //Arreglo de errores
@@ -56,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 //Incluye el header
-require 'includes/funciones.php';
 incluirTemplate('header');
 ?>
 
