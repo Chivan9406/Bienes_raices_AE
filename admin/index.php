@@ -5,9 +5,11 @@ require '../includes/app.php';
 estaAutenticado();
 
 use App\Propiedad;
+use App\Vendedor;
 
 // Implementar método para obtener las propiedades
 $propiedades = Propiedad::all();
+$vendedores = Vendedor::all();
 
 //Muestra mensaje condicional (alerta)
 $resultado = $_GET['resultado'] ?? null;

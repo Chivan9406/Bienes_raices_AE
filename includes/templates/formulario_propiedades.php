@@ -9,7 +9,7 @@
 
     <label for="imagen">Imagen:</label>
     <input type="file" id="imagen" name="propiedad[imagen]" accept="image/jpeg, image/png">
-    <?php if($propiedad->imagen): ?>
+    <?php if ($propiedad->imagen) : ?>
         <img src="/imagenes/<?php echo $propiedad->imagen; ?>" alt="imagen <?php echo $propiedad->id; ?>" class="imagen-small">
     <?php endif; ?>
 
@@ -33,10 +33,10 @@
 <fieldset>
     <legend>Vendedor</legend>
 
-    <!-- <select name="id_vendedor">
-        <option <?php echo $id_vendedor === '' ? 'selected disabled' : 'disabled'; ?> value="">-- Seleccione --</option>
-        <?php while ($vendedor = mysqli_fetch_assoc($resultadoConsulta)) : ?>
-            <option <?php echo $id_vendedor === $vendedor['id'] ? 'selected' : ''; ?> value="<?php echo sanitizar($propiedad->id_vendedor); ?>"><?php echo sanitizar($vendedor['nombre']) . " " . $vendedor['apellido']; ?></option>
-        <?php endwhile; ?>
-    </select> -->
+    <select id="vendedor" name="propiedad[id_vendedor]">
+        <option <?php echo $propiedad->id_vendedor === '' ? 'selected disabled' : 'disabled' ?> value="">-- Seleccione --</option>
+        <?php foreach ($vendedores as $vendedor) : ?>
+            <option <?php echo $propiedad->id_vendedor === $vendedor->id ? 'selected' : '' ?> value="<?php echo sanitizar($vendedor->id); ?>"><?php echo sanitizar($vendedor->nombre). " " . sanitizar($vendedor->apellido); ?></option>
+        <?php endforeach; ?>
+    </select>
 </fieldset>

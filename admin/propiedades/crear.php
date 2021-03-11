@@ -3,6 +3,7 @@
 require '../../includes/app.php';
 
 use App\Propiedad;
+use App\Vendedor;
 use Intervention\Image\ImageManagerStatic as Image;
 
 estaAutenticado();
@@ -10,9 +11,8 @@ estaAutenticado();
 // Primer instancia de la clase Objeto para el formulario
 $propiedad = new Propiedad();
 
-//Consultar para obtener los vendedores
-$consulta = "SELECT * FROM vendedores";
-$resultadoConsulta = mysqli_query($db, $consulta);
+// Consulta para obtener los vendedores
+$vendedores = Vendedor::all();
 
 //Arreglo con mensajes de errores
 $errores = Propiedad::getErrores();

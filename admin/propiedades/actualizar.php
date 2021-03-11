@@ -1,6 +1,7 @@
 <?php
 
 use App\Propiedad;
+use App\Vendedor;
 use Intervention\Image\ImageManagerStatic as Image;
 
 require '../../includes/app.php';
@@ -19,9 +20,8 @@ if (!$id) {
 //Obtener los datos de la propiedad
 $propiedad = Propiedad::find($id);
 
-//Consultar para obtener los vendedores
-$consulta = "SELECT * FROM vendedores";
-$resultadoConsulta = mysqli_query($db, $consulta);
+// Consulta para obtener los vendedores
+$vendedores = Vendedor::all();
 
 //Arreglo con mensajes de errores
 $errores = Propiedad::getErrores();
@@ -42,9 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //Realiza un resize a la imagen con intervention
         $imagen = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800, 600);
         $propiedad->setImagen($nombreImagen);
-
-        // Guarda la imagen en el servidor
-        $imagen->save(CARPETA_IMAGENES . $nombreImagen);
     }
 
     // Validación
@@ -52,6 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //Revisar que el arreglo de errores este vacio
     if (empty($errores)) {
+        if ($_FILES['propiedad']['tmp_name']['imagen']) {
+            // Guarda la imagen en el servidor
+            $imagen->save(CARPETA_IMAGENES . $nombreImagen);
+        }
 
         $resultado = $propiedad->guardar();
     }
