@@ -1,6 +1,6 @@
 <?php
-//Importar la BD
-$db = conectarDB();
+
+use App\Propiedad;
 
 //Obtener el id de la url
 $id = $_GET['id'];
@@ -11,49 +11,34 @@ if (!$id) {
     header('Location: /');
 }
 
-//Consultar
-$query = "SELECT * FROM propiedades WHERE id = $id";
+$propiedad = Propiedad::find($id);
 
-//Obtener resultados
-$resultado = mysqli_query($db, $query);
-
-//Si un id no existe
-if (!$resultado->num_rows) {
-    header('Location: /');
-}
-
-$propiedad = mysqli_fetch_assoc($resultado);
 ?>
 
 <main class="contenedor seccion contenido-centrado">
-    <h1><?php echo $propiedad['titulo']; ?></h1>
+    <h1><?php echo $propiedad->titulo; ?></h1>
 
-    <img loading="lazy" src="imagenes/<?php echo $propiedad['imagen']; ?>" alt="anuncio <?php echo $propiedad['id']; ?>">
+    <img loading="lazy" src="imagenes/<?php echo $propiedad->imagen; ?>" alt="anuncio <?php echo $propiedad->id; ?>">
     <!--Imagen anuncio-->
 
     <div class="resumen-propiedad">
-        <p class="precio">$<?php echo $propiedad['precio']; ?></p>
+        <p class="precio">$<?php echo $propiedad->precio; ?></p>
 
         <ul class="iconos-caracteristicas">
             <li>
                 <img class="icono" loading="lazy" src="build/img/icono_wc.svg" alt="icono wc">
-                <p><?php echo $propiedad['wc']; ?></p>
+                <p><?php echo $propiedad->wc; ?></p>
             </li>
             <li>
                 <img class="icono" loading="lazy" src="build/img/icono_estacionamiento.svg" alt="icono estacionamiento">
-                <p><?php echo $propiedad['estacionamiento']; ?></p>
+                <p><?php echo $propiedad->estacionamiento; ?></p>
             </li>
             <li>
                 <img class="icono" loading="lazy" src="build/img/icono_dormitorio.svg" alt="icono dormitorio">
-                <p><?php echo $propiedad['habitaciones']; ?></p>
+                <p><?php echo $propiedad->habitaciones; ?></p>
             </li>
         </ul>
 
-        <p><?php echo $propiedad['descripcion']; ?></p>
+        <p><?php echo $propiedad->descripcion; ?></p>
     </div>
 </main>
-
-<?php
-//Cerrar la conexión
-mysqli_close($db);
-?>
