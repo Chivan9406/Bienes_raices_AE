@@ -39,6 +39,10 @@ class Vendedor extends ActiveRecord
             self::$errores[] = 'Añade el teléfono del vendedor';
         }
 
+        if(!preg_match('/[0-9]{10}/', $this->telefono)) {
+            self::$errores[] = 'Formato de teléfono no válido';
+        }
+
         return self::$errores;
     }
 }
